@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/BenefitDashboardUITest/net8.0/Test_UIExecution_Reports
+/BenefitDashboardAPITests/net8.0/Test_Execution_APIReports
