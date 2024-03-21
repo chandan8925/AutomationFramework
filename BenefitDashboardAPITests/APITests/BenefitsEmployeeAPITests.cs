@@ -40,9 +40,9 @@ namespace BenefitsDashboardAPITests.Test
             try
             {
                 // Generate random firstName, lastname, depenedent as part of payload to create a new employee api
-                string firstName = GenerateRandomString(5);
-                string lastName = GenerateRandomString(5);
-                int dependents = GenerateRandomDependent();
+                string firstName = HelperMethods.GenerateRandomString(5);
+                string lastName = HelperMethods.GenerateRandomString(5);
+                int dependents = HelperMethods.GenerateRandomDependent();
 
                 // Call add employee call and pass the parameter for the request body
                 var restResponse = EmployeeAPICalls.AddAnEmployee(firstName, lastName, dependents);
@@ -81,9 +81,9 @@ namespace BenefitsDashboardAPITests.Test
             try
             {
                 // Generate random firstName, lastname, depenedent as part of payload to create a new employee api
-                string firstName = GenerateRandomString(5);
-                string lastName = GenerateRandomString(5);
-                int dependents = GenerateRandomDependent();
+                string firstName = HelperMethods.GenerateRandomString(5);
+                string lastName = HelperMethods.GenerateRandomString(5);
+                int dependents = HelperMethods.GenerateRandomDependent();
 
                 // Call add employee call and pass the parameter for the request body
                 var restResponse = EmployeeAPICalls.AddAnEmployee(firstName, lastName, dependents);
@@ -133,9 +133,9 @@ namespace BenefitsDashboardAPITests.Test
             try
             {
                 // Generate random firstName, lastname, depenedent as part of payload to create a new employee api
-                string firstName = GenerateRandomString(5);
-                string lastName = GenerateRandomString(5);
-                int dependents = GenerateRandomDependent();
+                string firstName = HelperMethods.GenerateRandomString(5);
+                string lastName = HelperMethods.GenerateRandomString(5);
+                int dependents = HelperMethods.GenerateRandomDependent();
                 var restResponse = EmployeeAPICalls.AddAnEmployee(firstName, lastName, dependents);
                 var employeeDetails = JsonSerializer.Deserialize<Employee>(json: restResponse.Content!);
 
@@ -172,9 +172,9 @@ namespace BenefitsDashboardAPITests.Test
             try
             {
                 // Generate random firstName, lastname, depenedent as part of payload to create a new employee api
-                string firstName = GenerateRandomString(5);
-                string lastName = GenerateRandomString(5);
-                int dependents = GenerateRandomDependent();
+                string firstName = HelperMethods.GenerateRandomString(5);
+                string lastName = HelperMethods.GenerateRandomString(5);
+                int dependents = HelperMethods.GenerateRandomDependent();
                 var restResponse = EmployeeAPICalls.AddAnEmployee(firstName, lastName, dependents);
                 var employeeDetails = JsonSerializer.Deserialize<Employee>(json: restResponse.Content!);
 
@@ -208,9 +208,9 @@ namespace BenefitsDashboardAPITests.Test
             try
             {
                 // Generate random firstName, lastname, depenedent as part of payload to create a new employee api
-                string firstName = GenerateRandomString(5);
-                string lastName = GenerateRandomString(5);
-                int dependents = GenerateRandomDependent();
+                string firstName = HelperMethods.GenerateRandomString(5);
+                string lastName = HelperMethods.GenerateRandomString(5);
+                int dependents = HelperMethods.GenerateRandomDependent();
                 var restResponse = EmployeeAPICalls.AddAnEmployee(firstName, lastName, dependents);
                 var employeeDetails = JsonSerializer.Deserialize<Employee>(json: restResponse.Content!);
                 string employeeId = employeeDetails?.id!;
@@ -228,8 +228,8 @@ namespace BenefitsDashboardAPITests.Test
                 deleteEmployeeId = employeeDetails!.id!;
 
                 // Generate random firstName, lastname, as part of payload to update the existing employee via put api
-                string updatedFirstName = GenerateRandomString(5);
-                string updatedLastName = GenerateRandomString(5);
+                string updatedFirstName = HelperMethods.GenerateRandomString(5);
+                string updatedLastName = HelperMethods.GenerateRandomString(5);
                 var updatedEmployeeDetailsResponse = EmployeeAPICalls.UpdateEmployeeDetails(updatedFirstName, updatedLastName, employeeId, dependents);
 
                 // Validate the response code and the field matches with the values which are updated as per the update employee payload
@@ -257,7 +257,7 @@ namespace BenefitsDashboardAPITests.Test
         {
             // Note creating all bad data for each individual field and sending them in order to validate the error message for each field
             // Order is 1)firstname greater than 50 2) last name is blank 3) dependent greater than 32
-            string firstName = GenerateRandomString(51);
+            string firstName = HelperMethods.GenerateRandomString(51);
             string lastName = "";
             int dependents = 33;
             var restResponse = EmployeeAPICalls.AddAnEmployee(firstName, lastName, dependents);
@@ -293,7 +293,7 @@ namespace BenefitsDashboardAPITests.Test
         public void ValidatePutEmployeesBadRequestUseCases()
         {
             // Update an employee by giving invalid id or removing id from payload with firstname character greater than 50 ,last name as blank and dependent greater than 32
-            string firstName = GenerateRandomString(51);
+            string firstName = HelperMethods.GenerateRandomString(51);
             string lastName = "";
             int dependents = 33;
             var restResponse = EmployeeAPICalls.UpdateEmployeeDetails(firstName, lastName, "123", dependents);

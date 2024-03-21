@@ -1,18 +1,30 @@
+using AventStack.ExtentReports;
+using BenefitDashboardAPITests.HelpersAPI;
 using BenefitsDashboardAPITests.APICalls;
 using Microsoft.Extensions.Configuration;
-using System.Text;
+using NUnit.Framework.Interfaces;
 
 public class APITestFactory
 {
     private IConfiguration _config;
     public string BaseUrl;
     public string Token;
-    public static Random Random = new Random();
     public EmployeeAPICalls EmployeeAPICalls;
+    public ExtentReports report = new ExtentReports();
+    public ExtentTest test;
+    public ExtentManager extentManager = new ExtentManager();
+    public HelperMethods HelperMethods ;
+
+    [OneTimeSetUp]
+    public void OneTimeSetup()
+    {
+       ExtentTestManager.CreateParentTest(GetType().Name);
+    }
 
     [SetUp]
     public void Setup()
     {
+        ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.Name);
         var builder = new ConfigurationBuilder()
             .AddJsonFile("appsettings.test.json");
 
@@ -20,27 +32,40 @@ public class APITestFactory
         BaseUrl = _config["BaseUrl"]!;
         Token = _config["Token"]!;
         EmployeeAPICalls = new EmployeeAPICalls(BaseUrl, Token);
+        HelperMethods = new HelperMethods();
+
+
     }
 
-    // Generate random string of any length
-    public static string GenerateRandomString(int length)
+    [TearDown]
+    public void AfterTest()
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        var stringBuilder = new StringBuilder(length);
-
-        for (int i = 0; i < length; i++)
+        var status = TestContext.CurrentContext.Result.Outcome.Status;
+        var stacktrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace)
+                ? ""
+                : string.Format("<pre>{0}</pre>", TestContext.CurrentContext.Result.StackTrace);
+        Status logstatus;
+        var errorMessage = TestContext.CurrentContext.Result.Message;
+        switch (status)
         {
-            stringBuilder.Append(chars[Random.Next(chars.Length)]);
+            case TestStatus.Failed:
+                logstatus = Status.Fail;
+                break;
+
+            case TestStatus.Inconclusive:
+                logstatus = Status.Warning;
+                break;
+
+            case TestStatus.Skipped:
+                logstatus = Status.Skip;
+                break;
+
+            default:
+                logstatus = Status.Pass;
+                break;
         }
 
-        return stringBuilder.ToString();
-    }
-
-    // Generate random dependent between 0-32
-    public static int GenerateRandomDependent()
-    {
-        var lowerBound = 0;
-        var upperBound = 32;
-        return Random.Next(lowerBound, upperBound);
+        ExtentTestManager.GetTest().Log(logstatus, "Test ended with " + logstatus + stacktrace);
+        ExtentManager.Instance.Flush();
     }
 }
