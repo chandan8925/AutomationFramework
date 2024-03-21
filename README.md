@@ -60,7 +60,14 @@ Page Object Model (POM): Provides a structured approach to UI testing.
 Helper Methods: Reusable functionalities for generating random data, calculating benefits, and net pay.
 Manual Bug Injection: Comments within the code highlight bugs added as part of a testing challenge.
 
-Visual Summary: A screenshot of the test results is displayed below
+Visual Summary: A screenshot of the test results is displayed below and a glimpse in extent reports dashboard
 
 ![image](https://github.com/chandan8925/AutomationFramework/assets/14102123/f258baea-b268-4216-b0e3-4bf47833ad6f)
+
+![image](https://github.com/chandan8925/AutomationFramework/assets/14102123/80aef581-7dc2-4572-8303-fdc07cdbbc21)
+
+![image](https://github.com/chandan8925/AutomationFramework/assets/14102123/8732cd3c-e936-4928-a8d4-08d511221b2c)
+
+
+
 
