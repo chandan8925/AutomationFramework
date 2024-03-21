@@ -20,7 +20,7 @@ Frameworks: Selenium
 
 Languages: C# (Selenium)
 
-Make sure the project <targetfile> is greater than .net 7.0
+Please make sure the project <targetfile> is greater than .net 7.0
 
 API Automation:
 
@@ -30,7 +30,7 @@ Languages: C#
 
 Library: RestSharp
 
-Make sure the project <targetfile> is greater than .net 7.0
+Please make sure the project <targetfile> is greater than .net 7.0
 
 Benefit Dashboard Automation Project Overview
 This project automates tests for the Benefit Dashboard application, covering both the user interface (UI) and application programming interface (API).
