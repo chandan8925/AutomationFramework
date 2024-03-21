@@ -15,14 +15,21 @@ Run Tests: Select the desired project or test suite within the test explorer and
 
 Technical Details
 UI Automation:
+
 Frameworks: Selenium
+
 Languages: C# (Selenium)
+
 Make sure the project <targetfile> is greater than .net 7.0
 
 API Automation:
+
 Framework: NUnit
+
 Languages: C#
+
 Library: RestSharp
+
 Make sure the project <targetfile> is greater than .net 7.0
 
 Benefit Dashboard Automation Project Overview
