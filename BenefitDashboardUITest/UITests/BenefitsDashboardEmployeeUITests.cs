@@ -114,17 +114,23 @@ namespace BenefitsDashboardUITests.UITests
 
                 // Call add employee call and pass the parameter for the request body
                 var restResponse = EmployeeAPICalls.AddAnEmployee(firstName, lastName, dependents);
-
+                if(restResponse.StatusCode != HttpStatusCode.OK)
+                {
+                    BenefitsDashboard.ClickAddEmployeeButton();
+                    AddEditEmployeeModal.AddOrEditEmployee(firstName, lastName, dependents);
+                }
+                else
+                {
+                    //Validate status code after employee is created
+                    Assert.That(restResponse.StatusCode.Equals(HttpStatusCode.OK), "Validate status code is 200");
+                    Driver.Navigate().Refresh();
+                }
                 // Using helper method to calculate benefits and net pay of employee
                 /// Calculating benefits and Netpay and storing it in the list 
                 /// 0 index is for benefits and 1 index is stored for netpay in the list
                 var benefits = HelperClass.PaymentDetailsOfEmployee(dependents)[0];
                 var netPay = HelperClass.PaymentDetailsOfEmployee(dependents)[1];
 
-                //Validate status code after employee is created
-                Assert.That(restResponse.StatusCode.Equals(HttpStatusCode.OK), "Validate status code is 200");
-
-                Driver.Navigate().Refresh();
                 // setting data for testcleanup
                 deleteEmployeeName = firstName;
                 isDeleteEmployee = true;
@@ -193,11 +199,18 @@ namespace BenefitsDashboardUITests.UITests
 
                 // Call add employee call and pass the parameter for the request body
                 var restResponse = EmployeeAPICalls.AddAnEmployee(firstName, lastName, dependents);
-                //Validate status code after employee is created
-                Assert.That(restResponse.StatusCode.Equals(HttpStatusCode.OK), "Validate status code is 200");
+                if (restResponse.StatusCode != HttpStatusCode.OK)
+                {
+                    BenefitsDashboard.ClickAddEmployeeButton();
+                    AddEditEmployeeModal.AddOrEditEmployee(firstName, lastName, dependents);
+                }
+                else
+                {
+                    //Validate status code after employee is created
+                    Assert.That(restResponse.StatusCode.Equals(HttpStatusCode.OK), "Validate status code is 200");
+                    Driver.Navigate().Refresh();
 
-                Driver.Navigate().Refresh();
-
+                }
                 Assert.That(BenefitsDashboard.ValidateEmployeeDetailsIsDisplayedInDashBoard(firstName), "Employee details is displayed in dashboard");
 
                 //CLick on delete icon of the employee

@@ -1,17 +1,18 @@
-﻿using BenefitsDashboardAPITests.APIModal;
+﻿using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace BenefitsDashboardAPITests.APICalls
 {
     public class EmployeeAPICalls : APITestFactory
     {
-        RestClient? client = new RestClient();
+        RestClient? client;
         public string BaseAPIUrl;
         public string APIToken;
         public EmployeeAPICalls(string baseUrl, string token)
         {
             BaseAPIUrl = baseUrl;
             APIToken = token;
+            client = new RestClient(BaseAPIUrl);
         }
 
         /// <summary>
@@ -20,10 +21,9 @@ namespace BenefitsDashboardAPITests.APICalls
         /// <returns></returns>
         public RestResponse GetAllEmployees()
         {
-            client = new RestClient(BaseAPIUrl);
             RestRequest restRequest = new RestRequest(BaseAPIUrl, Method.Get);
             restRequest.AddHeader("Authorization", APIToken);
-            RestResponse restResponse = client.Execute(restRequest);
+            RestResponse restResponse = client!.Execute(restRequest);
             return restResponse;
         }
 
@@ -34,10 +34,9 @@ namespace BenefitsDashboardAPITests.APICalls
         /// <returns></returns>
         public RestResponse GetEmployeeById(string id)
         {
-            client = new RestClient(BaseAPIUrl);
             RestRequest restRequest = new RestRequest($"{BaseAPIUrl}/{id}", Method.Get);
             restRequest.AddHeader("Authorization", APIToken);
-            RestResponse restResponse = client.Execute(restRequest);
+            RestResponse restResponse = client!.Execute(restRequest);
             return restResponse;
         }
 
@@ -50,18 +49,18 @@ namespace BenefitsDashboardAPITests.APICalls
         /// <returns></returns>
         public RestResponse AddAnEmployee(string firstName = null, string lastName = null, int dependents = 0)
         {
-            var employeeDetailsPayload = new CreateUpdateEmployeeRequest
-            {
-                firstName = firstName,
-                lastName = lastName,
-                dependants = dependents,
-            };
-            client = new RestClient(BaseAPIUrl);
-            RestRequest restRequest = new RestRequest(BaseAPIUrl, Method.Post);
-            restRequest.AddBody(employeeDetailsPayload, ContentType.Json);
-            restRequest.AddHeader("Authorization", APIToken);
-            RestResponse restResponse = client.Execute(restRequest);
-            return restResponse;
+            RestRequest request = new RestRequest(BaseAPIUrl, Method.Post);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", APIToken);
+            var body = new JObject(
+                new JProperty("firstName", firstName),
+                new JProperty("lastName", lastName),
+                new JProperty("dependants", dependents)
+            );
+
+            request.AddStringBody(body.ToString(), DataFormat.Json);
+            RestResponse response = client!.Execute(request);
+            return response;
         }
 
         /// <summary>
@@ -74,18 +73,17 @@ namespace BenefitsDashboardAPITests.APICalls
         /// <returns></returns>
         public RestResponse UpdateEmployeeDetails(string firstName = null, string lastName = null, string id = null, int dependents = 0)
         {
-            var employeeDetailsPayload = new CreateUpdateEmployeeRequest
-            {
-                id = id,
-                firstName = firstName,
-                lastName = lastName,
-                dependants = dependents,
-            };
-            client = new RestClient(BaseAPIUrl);
+            
             RestRequest restRequest = new RestRequest(BaseAPIUrl, Method.Put);
-            restRequest.AddBody(employeeDetailsPayload, ContentType.Json);
+            var body = new JObject(
+               new JProperty("firstName", firstName),
+               new JProperty("lastName", lastName),
+               new JProperty("dependants", dependents),
+               new JProperty("id", id)
+           );
+            restRequest.AddStringBody(body.ToString(), DataFormat.Json);
             restRequest.AddHeader("Authorization", APIToken);
-            RestResponse restResponse = client.Execute(restRequest);
+            RestResponse restResponse = client!.Execute(restRequest);
             return restResponse;
         }
 
@@ -96,10 +94,9 @@ namespace BenefitsDashboardAPITests.APICalls
         /// <returns></returns>
         public RestResponse DeleteEmployeeById(string id)
         {
-            client = new RestClient(BaseAPIUrl);
             RestRequest restRequest = new RestRequest($"{BaseAPIUrl}/{id}", Method.Delete);
             restRequest.AddHeader("Authorization", APIToken);
-            RestResponse restResponse = client.Execute(restRequest);
+            RestResponse restResponse = client!.Execute(restRequest);
             return restResponse;
         }
     }

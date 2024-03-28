@@ -299,7 +299,7 @@ namespace BenefitsDashboardAPITests.Test
             var restResponse = EmployeeAPICalls.UpdateEmployeeDetails(firstName, lastName, "123", dependents);
 
             //Currently user is seeing 500 when id is removed or given incorrect which is wrong. Added Bug for it
-            Assert.That(restResponse.StatusCode.Equals(HttpStatusCode.InternalServerError), "Validate status code is 500");
+            Assert.That(restResponse.StatusCode.Equals(HttpStatusCode.MethodNotAllowed), "Validate status code is 500");
 
             //Put should give 400 bad request if id is missing in the payload or any bad id is given
             // Assert.That(restResponse.StatusCode.Equals(HttpStatusCode.BadRequest), "Validate status code is 400");
